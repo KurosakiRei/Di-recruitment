@@ -1,14 +1,14 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { BrowserRouter,Switch,Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import store from './redux/store'
 import Main from '../src/containers/interface/main-interface'
 import Login from '../src/containers/interface/login-interface'
 import Register from '../src/containers/interface/register-interface'
 
-ReactDOM.render( 
+render( 
 <Provider store={store}>
     <BrowserRouter>
         <Switch>
