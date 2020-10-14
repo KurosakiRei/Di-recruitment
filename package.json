@@ -43,5 +43,6 @@
         "less": "^2.7.3",
         "react-app-rewired": "^2.1.6",
         "redux-devtools-extension": "^2.13.8"
-    }
+    },
+    "proxy": "http://localhost:4000"
 }

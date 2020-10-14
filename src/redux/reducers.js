@@ -4,7 +4,8 @@ import { AUTH_SUCCEEDED, ERR_MSG } from './action-types'
 
 const initUser = {
     username: '',
-    type: '',
+    userType: '',
+    avatar: '',
     errMsg: '',
     redirect: ''
 }
@@ -12,7 +13,11 @@ const initUser = {
 function user(state = initUser, actions) {
     switch (actions.type) {
         case AUTH_SUCCEEDED:
-            return {...actions.data, redirect: '/' }
+            const { avatar } = state
+            const { userType } = actions.data
+
+            // Update the state and redirect URL
+            return {...actions.data, redirect: avatar ? `/${userType}` : `/${userType}info` }
         case ERR_MSG:
             return {...state, errMsg: actions.data }
         default:

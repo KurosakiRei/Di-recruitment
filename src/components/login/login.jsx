@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
+    Toast,
     NavBar,
     WingBlank,
     List,
@@ -7,6 +9,7 @@ import {
     WhiteSpace,
     Button
     } from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
 
 import Logo from '../logo/logo'
 
@@ -17,15 +20,34 @@ export default class Login extends Component{
         password:'',
     }
 
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        toLogin: PropTypes.func.isRequired,
+    }
+
+    // Display the error message
+    componentDidUpdate(){
+        const {user, errMsg} = this.props
+        if(user.errMsg){
+            Toast.fail(JSON.stringify(user.errMsg),1.5)
+            errMsg('')
+        }
+        console.log(user.userType)
+    }
+
     updateState = (type, val) =>{
         this.setState({[type]:val})
     }
 
     toLogin = () =>{
-        console.log(this.state)
+        this.props.toLogin(this.state)
     }
 
     render() {
+        const {user} = this.props
+        if(user.redirect){
+            return <Redirect to={user.redirect}/>
+        }
         return (
             <div>
                 <NavBar>Di-recruitment</NavBar>

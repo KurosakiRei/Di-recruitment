@@ -3,7 +3,7 @@ import { Login, Register } from '../api/index'
 
 
 const authSucceeded = (userData) => ({ type: AUTH_SUCCEEDED, data: userData })
-const errMsg = (message) => ({ type: ERR_MSG, data: message })
+export const errMsg = (message) => ({ type: ERR_MSG, data: message })
 
 
 export const toRegister = ({ username, password, rePassword, userType }) => {
@@ -16,10 +16,10 @@ export const toRegister = ({ username, password, rePassword, userType }) => {
 
     return async dispatch => {
         const response = await Register({ username, password, userType })
-        if (response.data.code === '0') {
+        if (response.data.code === 0) {
             dispatch(authSucceeded(response.data.data))
         } else {
-            dispatch(errMsg(response.data.data))
+            dispatch(errMsg(`The username already exists`))
         }
     }
 }
@@ -31,10 +31,10 @@ export const toLogin = ({ username, password }) => {
 
     return async dispatch => {
         const response = await Login({ username, password })
-        if (response.data.code === '0') {
+        if (response.data.code === 0) {
             dispatch(authSucceeded(response.data.data))
         } else {
-            dispatch(errMsg(response.data.data))
+            dispatch(errMsg(response.data.msg))
         }
     }
 }

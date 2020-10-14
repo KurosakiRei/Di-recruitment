@@ -10,6 +10,7 @@ import {
     Picker,
     Button
     } from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
 
 import Logo from '../logo/logo'
 
@@ -25,9 +26,9 @@ export default class Register extends Component{
     static propTypes = {
         user: PropTypes.object.isRequired,
         toRegister: PropTypes.func.isRequired,
+        errMsg: PropTypes.func.isRequired,
     }
     
-
     userType=[{
         label:'Recruiter',
         value:'recruiter'
@@ -37,22 +38,31 @@ export default class Register extends Component{
         value:'seeker'
     }]
 
+    // Display the error message
+    componentDidUpdate(){
+        const {user, errMsg} = this.props
+        if(user.errMsg){
+            Toast.fail(JSON.stringify(user.errMsg),1.5)
+            errMsg('')
+        }
+    }
+
     updateState = (type, val) =>{
         this.setState({[type]:val})
     }
 
     toRegister = () =>{
         // Format
-        const {user} = this.props
         const userData = JSON.parse(JSON.stringify(this.state).replace('[','').replace(']',''))
         this.props.toRegister(userData)
-        if(user.errMsg){
-            Toast.fail(JSON.stringify(user.errMsg),1)
-        }
-
+        
     }
 
     render() {
+        const {user} = this.props
+        if(user.redirect){
+            return <Redirect to={user.redirect}/>
+        }
         return (
             <div>
                 <NavBar>Di-recruitment</NavBar>
