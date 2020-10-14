@@ -1,14 +1,23 @@
 import { combineReducers } from 'redux'
 
-import { DEFAULT } from './action-types'
+import { AUTH_SUCCEEDED, ERR_MSG } from './action-types'
 
-function main(state = 0, actions) {
+const initUser = {
+    username: '',
+    type: '',
+    errMsg: '',
+    redirect: ''
+}
+
+function user(state = initUser, actions) {
     switch (actions.type) {
-        case DEFAULT:
-            return state
+        case AUTH_SUCCEEDED:
+            return {...actions.data, redirect: '/' }
+        case ERR_MSG:
+            return {...state, errMsg: actions.data }
         default:
             return state
     }
 }
 
-export default combineReducers({ main })
+export default combineReducers({ user })

@@ -11,6 +11,20 @@ import {
 import Logo from '../logo/logo'
 
 export default class Login extends Component{
+
+    state={
+        username:'',
+        password:'',
+    }
+
+    updateState = (type, val) =>{
+        this.setState({[type]:val})
+    }
+
+    toLogin = () =>{
+        console.log(this.state)
+    }
+
     render() {
         return (
             <div>
@@ -18,17 +32,17 @@ export default class Login extends Component{
                 <Logo/>
                 <WingBlank>
                     <List>
-                        <InputItem placeholder="Please enter the username" >Username:</InputItem>
-                        <InputItem type='password' placeholder="Please enter the password" >Password:</InputItem>
+                        <InputItem placeholder="Please enter the username" onChange={val => this.updateState('username', val)}>Username:</InputItem>
+                        <InputItem type='password' placeholder="Please enter the password" onChange={val => this.updateState('password', val)}>Password:</InputItem>
                     </List>
                     <WhiteSpace size="lg"></WhiteSpace>
                     <WhiteSpace size="xl"></WhiteSpace>
                     <WhiteSpace size="xl"></WhiteSpace>
                     <WhiteSpace size="xl"></WhiteSpace>
                     <WhiteSpace size="xl"></WhiteSpace>
-                    <Button type="primary">Login</Button>
+                    <Button type="primary" onClick={this.toLogin}>Login</Button>
                     <WhiteSpace size="lg"></WhiteSpace>
-                    <Button>Create an account</Button>
+                    <Button onClick={()=>this.props.history.replace('/register')}>Create an account</Button>
                 </WingBlank>
             </div>
         )
