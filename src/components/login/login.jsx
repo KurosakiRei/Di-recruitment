@@ -29,10 +29,9 @@ export default class Login extends Component{
     componentDidUpdate(){
         const {user, errMsg} = this.props
         if(user.errMsg){
-            Toast.fail(JSON.stringify(user.errMsg),1.5)
+            Toast.fail(user.errMsg,1.5)
             errMsg('')
         }
-        console.log(user.userType)
     }
 
     updateState = (type, val) =>{

@@ -1,9 +1,12 @@
-import { AUTH_SUCCEEDED, ERR_MSG } from './action-types'
-import { Login, Register } from '../api/index'
+import { AUTH_SUCCEEDED, ERR_MSG, UPDATE_USER, RESET_USER } from './action-types'
+import { login, register, update } from '../api/index'
 
 
-const authSucceeded = (userData) => ({ type: AUTH_SUCCEEDED, data: userData })
-export const errMsg = (message) => ({ type: ERR_MSG, data: message })
+const authSucceeded = userData => ({ type: AUTH_SUCCEEDED, data: userData })
+const updateUser = userData => ({ type: UPDATE_USER, data: userData })
+const resetUser = message => ({ type: RESET_USER, data: message })
+export const errMsg = message => ({ type: ERR_MSG, data: message })
+
 
 
 export const toRegister = ({ username, password, rePassword, userType }) => {
@@ -15,7 +18,7 @@ export const toRegister = ({ username, password, rePassword, userType }) => {
     }
 
     return async dispatch => {
-        const response = await Register({ username, password, userType })
+        const response = await register({ username, password, userType })
         if (response.data.code === 0) {
             dispatch(authSucceeded(response.data.data))
         } else {
@@ -30,11 +33,25 @@ export const toLogin = ({ username, password }) => {
     }
 
     return async dispatch => {
-        const response = await Login({ username, password })
+        const response = await login({ username, password })
         if (response.data.code === 0) {
             dispatch(authSucceeded(response.data.data))
         } else {
             dispatch(errMsg(response.data.msg))
+        }
+    }
+}
+
+export const toUpdate = ({ avatar, ...userData }) => {
+    if (!avatar) {
+        return errMsg('Please choose an avatar')
+    }
+    return async dispatch => {
+        const response = await update({ avatar, ...userData })
+        if (response.data.code === 0) {
+            dispatch(updateUser(response.data.data))
+        } else {
+            dispatch(resetUser(response.data.msg))
         }
     }
 }

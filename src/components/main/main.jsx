@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
-import RecruiterInfo from '../recruiter-info/recruiter-info'
-import SeekerInfo from '../seeker-info/seeker-info'
+import RecruiterInfo from '../../containers/interfaces/recruiter-info-interface'
+import SeekerInfo from '../../containers/interfaces/seeker-info-interface'
 
 export default class Main extends Component{
     render() {
@@ -16,3 +16,7 @@ export default class Main extends Component{
         )
     }
 }
+
+/*
+ 
+*/
