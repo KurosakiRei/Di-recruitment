@@ -62,6 +62,7 @@ app.post('/login', (req, res) => {
 app.post('/update', (req, res) => {
     const { userid } = req.cookies
     if (!userid) {
+        res.clearCookie('userid')
         res.send({ code: 1, msg: 'Please login first' })
     } else {
         userModel.findByIdAndUpdate({ _id: userid }, req.body, filter, (err, data) => {
