@@ -17,7 +17,7 @@ function user(state = initUser, actions) {
             const { userType } = actions.data
 
             // Update the state and redirect URL
-            return {...actions.data, redirect: avatar ? `/${userType}` : `/${userType}info` }
+            return {...actions.data, redirect: avatar ? `/${userType}` : `/${userType}_info` }
         case ERR_MSG:
             return {...state, errMsg: actions.data }
         default:
