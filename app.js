@@ -15,6 +15,7 @@ const filter = { password: 0, __v: 0 }
 app.post('/register', (req, res) => {
     const { username, password, userType } = req.body
 
+    // Add the data into the database
     new userModel({ username, password: md5(password), userType }).save((err, data) => {
         if (err) {
             res.send({
@@ -39,6 +40,7 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     const { username, password } = req.body
 
+    // Check if there is matching data in the database
     userModel.findOne({ username, password: md5(password) }, filter, (err, data) => {
         if (!data) {
             res.send({
@@ -56,5 +58,39 @@ app.post('/login', (req, res) => {
     })
 
 })
+
+app.post('/update', (req, res) => {
+    const { userid } = req.cookies
+    if (!userid) {
+        res.send({ code: 1, msg: 'Please login first' })
+    } else {
+        userModel.findByIdAndUpdate({ _id: userid }, req.body, filter, (err, data) => {
+            const { _id, username, userType } = data
+            if (err) {
+                res.send({ code: 1, msg: err })
+            } else {
+                res.send({ code: 0, data: Object.assign(req.body, { _id, username, userType }) })
+            }
+        })
+    }
+
+})
+
+app.get('/user', (req, res) => {
+    const { userid } = req.cookies
+    if (!userid) {
+        res.send({ code: 1, msg: 'Please login first' })
+    } else {
+        userModel.findById({ _id: userid }, filter, (err, data) => {
+            if (err) {
+                res.send({ code: 1, msg: err })
+            } else {
+                res.send({ code: 0, data })
+            }
+        })
+    }
+})
+
+
 
 module.exports = app;
