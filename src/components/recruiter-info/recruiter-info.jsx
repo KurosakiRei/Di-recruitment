@@ -9,6 +9,7 @@ import {
     TextareaItem,
     Toast 
 } from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
 
 import AvatarSelector from '../avatar-selector/avatar-selector'
 
@@ -51,6 +52,10 @@ export default class RecruiterInfo extends Component{
     }
 
     render() {
+        const {user} = this.props
+        if(user.avatar){
+            return <Redirect to='/recruiter'/>
+        }
         return (
             <div>
                 <NavBar>Personal information</NavBar>

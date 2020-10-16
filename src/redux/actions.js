@@ -1,10 +1,10 @@
 import { AUTH_SUCCEEDED, ERR_MSG, UPDATE_USER, RESET_USER } from './action-types'
-import { login, register, update } from '../api/index'
+import { login, register, update, getUser } from '../api/index'
 
 
 const authSucceeded = userData => ({ type: AUTH_SUCCEEDED, data: userData })
 const updateUser = userData => ({ type: UPDATE_USER, data: userData })
-const resetUser = message => ({ type: RESET_USER, data: message })
+export const resetUser = message => ({ type: RESET_USER, data: message })
 export const errMsg = message => ({ type: ERR_MSG, data: message })
 
 
@@ -48,6 +48,17 @@ export const toUpdate = ({ avatar, ...userData }) => {
     }
     return async dispatch => {
         const response = await update({ avatar, ...userData })
+        if (response.data.code === 0) {
+            dispatch(updateUser(response.data.data))
+        } else {
+            dispatch(resetUser(response.data.msg))
+        }
+    }
+}
+
+export const toGetUser = () => {
+    return async dispatch => {
+        const response = await getUser()
         if (response.data.code === 0) {
             dispatch(updateUser(response.data.data))
         } else {
