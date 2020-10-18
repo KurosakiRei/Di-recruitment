@@ -7,8 +7,8 @@ import {
     Card,
 } from 'antd-mobile'
 import { withRouter } from 'react-router-dom'
+import QueueAnim from 'rc-queue-anim'
 
-import '../../assets/css/utils.css'
 
 
 class UserList extends Component{
@@ -40,7 +40,9 @@ class UserList extends Component{
         return (
         <WingBlank style={{marginTop: 50, marginBottom: 50}} size="lg" >
             {/*Filter off the users who didn't set the profile*/}
-            {userList.filter(each => each.avatar).map((each, index) => <div key={each.username}>
+            {userList.filter(each => each.avatar).map((each, index) => 
+            <QueueAnim type='scale' delay={100}>
+                <div key={each.username}>
                     <WhiteSpace />
                         <Card onClick={()=>{this.props.history.push(`/chat/${each._id}`)}}>
                             <Card.Header
@@ -59,7 +61,9 @@ class UserList extends Component{
                             </Card.Body>}
                         </Card>
                     <WhiteSpace />
-                </div>)
+                </div>
+            </QueueAnim>
+                )
             }
         </WingBlank>
         )

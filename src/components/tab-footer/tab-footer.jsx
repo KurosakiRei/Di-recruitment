@@ -9,6 +9,7 @@ class TabFooter extends Component{
 
     static propTypes = {
         tabList: PropTypes.array.isRequired,
+        unReads: PropTypes.number.isRequired,
     }
     
 
@@ -19,6 +20,7 @@ class TabFooter extends Component{
                 <TabBar>
                     {tabList.filter(each => !each.hide).map(each => 
                     <TabBar.Item
+                    badge = {each.path === '/message'?this.props.unReads:null}
                     title={each.tab}
                     key={each.path}
                     icon={{uri: require(`../../assets/images/nav/${each.icon}.png`)}}

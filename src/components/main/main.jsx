@@ -24,6 +24,7 @@ export default class Main extends Component{
     static propTypes = {
         user: PropTypes.object.isRequired,
         toGetUser: PropTypes.func.isRequired,
+        unReads: PropTypes.number.isRequired,
     }
 
     tabList = [
@@ -114,7 +115,7 @@ export default class Main extends Component{
                     <Route path='/chat/:userid' component={Chat}></Route>
                     <Route component={NotFound}></Route>
                 </Switch>
-                {currentTab?<TabFooter tabList={tabList}></TabFooter>:null}
+                {currentTab?<TabFooter unReads={this.props.unReads} tabList={tabList}></TabFooter>:null}
             </div>
         )
     }

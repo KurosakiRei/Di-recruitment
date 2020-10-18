@@ -35,22 +35,22 @@ export default class Profile extends Component{
         return (
             <div style={{marginTop: 50, marginBottom: 50}}>
                 <Result
-                title={username}
-                img={<img src={require(`../../assets/images/avatars/${avatar}.png`)}  alt='avatar'/>}
-                message={company} />
-                <List renderHeader={()=>'Information'}>
-                    <Item>
-                        {userType==='recruiter'?
-                        <Brief>Recruiting: {position}</Brief>
-                        :<Brief>Objective: {position}</Brief>}
-                        {userType==='recruiter'?
-                        <Brief>Requirements: {info}</Brief>
-                        :<Brief>Self-introduction: {info}</Brief>}
-                        {salary?<Brief>Salary: {salary}</Brief>:null}
-                    </Item>
-                </List>
-                <WhiteSpace></WhiteSpace>
-                <Button type='warning' onClick={this.signOut}>Sign out</Button>
+                    title={username}
+                    img={<img src={require(`../../assets/images/avatars/${avatar}.png`)}  alt='avatar'/>}
+                    message={company} />
+                    <List renderHeader={()=>'Information'}>
+                        <Item>
+                            {userType==='recruiter'?
+                            <Brief>Recruiting: {position}</Brief>
+                            :<Brief>Objective: {position}</Brief>}
+                            {userType==='recruiter'?
+                            <Brief>Requirements: {info}</Brief>
+                            :<Brief>Self-introduction: {info}</Brief>}
+                            {salary?<Brief>Salary: {salary}</Brief>:null}
+                        </Item>
+                    </List>
+                    <WhiteSpace></WhiteSpace>
+                    <Button type='warning' onClick={this.signOut}>Sign out</Button>
             </div>
         )
     }  

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { AUTH_SUCCEEDED, ERR_MSG, UPDATE_USER, RESET_USER, RECEIVE_USER_LIST, RECEIVE_MSG_LIST, RECEIVE_MSG } from './action-types'
+import { AUTH_SUCCEEDED, ERR_MSG, UPDATE_USER, RESET_USER, RECEIVE_USER_LIST, RECEIVE_MSG_LIST, RECEIVE_MSG, MARK_AS_READ } from './action-types'
 
 const initUser = {
     username: '',
@@ -47,12 +47,32 @@ const initMessageList = {
 function messageList(state = initMessageList, actions) {
     switch (actions.type) {
         case RECEIVE_MSG_LIST:
-            return {...actions.data, unReads: state.unReads }
+            const { users, chatMsgs, myId } = actions.data
+            return {
+                users,
+                chatMsgs,
+                unReads: chatMsgs.reduce((total, each) => total + (!each.read && each.to === myId), 0)
+            }
         case RECEIVE_MSG:
+            const { message } = actions.data
             return {
                 users: state.users,
-                chatMsgs: [...state.chatMsgs, actions.data],
-                unReads: state.unReads
+                chatMsgs: [...state.chatMsgs, message],
+                unReads: state.unReads + (!message.read && message.to === actions.data.myId ? 1 : 0)
+            }
+
+        case MARK_AS_READ:
+            const { from, to, num } = actions.data
+            return {
+                users: state.users,
+                chatMsgs: state.chatMsgs.map(each => {
+                    if (each.from === from && each.to === to && !each.read) {
+                        return {...each, read: true }
+                    } else {
+                        return each
+                    }
+                }),
+                unReads: state.unReads - num
             }
         default:
             return state

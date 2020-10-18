@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {NavBar, List, InputItem, Icon, Grid} from 'antd-mobile'
 
+
 const Item = List.Item
 
 export default class Chat extends Component{
@@ -16,6 +17,7 @@ export default class Chat extends Component{
         user: PropTypes.object.isRequired,
         messageList: PropTypes.object.isRequired,
         toSendMessage: PropTypes.func.isRequired,
+        toReadMessage: PropTypes.func.isRequired,
     }
 
     // Scroll to the bottom after the user entered
@@ -32,6 +34,11 @@ export default class Chat extends Component{
         window.scrollTo(0, document.body.scrollHeight)
     }
 
+    componentWillUnmount(){
+        const {user} = this.props
+        const {userid} = this.props.match.params
+        this.props.toReadMessage({from:userid, to:user._id})
+    }
 
     toSend = () => {
         const from = this.props.user._id
@@ -75,28 +82,28 @@ export default class Chat extends Component{
                 >
                     {users[targetId].username}
                 </NavBar>
-                <List style={{marginTop:50, marginBottom:50}}>
-                {chatMsgs.filter(each => each.chat_id === chat_id).map(each => {
-                    if(each.from === targetId){
-                        return (
-                        <Item
-                            key={each.create_time}
-                            thumb={targetAvatar}
-                        >
-                            {each.content}
-                        </Item>)
-                    }else{
-                        return (
-                        <Item
-                            key={each.create_time}
-                            className='chat-me'
-                            extra='me'
-                            >
-                            {each.content}
-                        </Item>)
-                    }
-                })}
-                </List>
+                    <List style={{marginTop:50, marginBottom:50}}>
+                        {chatMsgs.filter(each => each.chat_id === chat_id).map(each => {
+                            if(each.from === targetId){
+                                return (
+                                <Item
+                                    key={each.create_time}
+                                    thumb={targetAvatar}
+                                >
+                                    {each.content}
+                                </Item>)
+                            }else{
+                                return (
+                                <Item
+                                    key={each.create_time}
+                                    className='chat-me'
+                                    extra='me'
+                                    >
+                                    {each.content}
+                                </Item>)
+                            }
+                        })}
+                    </List>
                 <div className='am-tab-bar'>
                     <InputItem
                     placeholder="enter text..."
