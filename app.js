@@ -3,6 +3,7 @@ var cookieParser = require('cookie-parser');
 const md5 = require('blueimp-md5')
 
 const userModel = require('./db/userModel')
+const chatModel = require('./db/chatModel')
 
 var app = express();
 
@@ -80,6 +81,7 @@ app.post('/update', (req, res) => {
 app.get('/user', (req, res) => {
     const { userid } = req.cookies
     if (!userid) {
+        res.clearCookie('userid')
         res.send({ code: 1, msg: 'Please login first' })
     } else {
         userModel.findById({ _id: userid }, filter, (err, data) => {
@@ -92,6 +94,54 @@ app.get('/user', (req, res) => {
     }
 })
 
+app.get('/userlist', (req, res) => {
+    const { userid } = req.cookies
+    if (!userid) {
+        res.clearCookie('userid')
+        res.send({ code: 1, msg: 'Please login first' })
+    } else {
+        const { userType } = req.query
+        userModel.find({ userType }, filter, (err, data) => {
+            if (err) {
+                res.send({ code: 1, msg: err })
+            } else {
+                res.send({ code: 0, data })
+            }
+        })
+    }
+
+})
+
+app.get('/msglist', (req, res) => {
+
+    userModel.find((err, users) => {
+        // Define the users object
+        if (!err) {
+            users = users.reduce((users, each) => {
+                users[each._id] = { username: each.username, avatar: each.avatar }
+                return users
+            }, {})
+        }
+        const { userid } = req.cookies
+        chatModel.find({ $or: [{ to: userid }, { from: userid }] }, filter, (err, chatMsgs) => {
+            if (!err) {
+                // Return the users object and chatMsgs array
+                res.send({ code: 0, data: { users, chatMsgs } })
+            }
+        })
+    })
+
+})
+
+app.post('/readmsg', (req, res) => {
+    const { from } = req.body
+    const to = req.cookies.userid
+    chatModel.updateMany({ from, to, read: false }, { read: true }, { multi: true }, (err, result) => {
+        if (!err) {
+            res.send({ code: 0, data: result.nModified })
+        }
+    })
+})
 
 
 module.exports = app;
