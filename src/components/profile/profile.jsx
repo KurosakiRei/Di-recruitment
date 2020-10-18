@@ -29,20 +29,23 @@ export default class Profile extends Component{
     }
 
     render() {
-        const {username, avatar, company, position, info, salary}=this.props.user
+        const {username, userType,avatar, company, position, info, salary}=this.props.user
         const Item = List.Item;
         const Brief = Item.Brief;
         return (
-            <div>
+            <div style={{marginTop: 50, marginBottom: 50}}>
                 <Result
                 title={username}
                 img={<img src={require(`../../assets/images/avatars/${avatar}.png`)}  alt='avatar'/>}
-                message={company}
-                />
+                message={company} />
                 <List renderHeader={()=>'Information'}>
                     <Item>
-                        <Brief>Position: {position}</Brief>
-                        <Brief>Info: {info}</Brief>
+                        {userType==='recruiter'?
+                        <Brief>Recruiting: {position}</Brief>
+                        :<Brief>Objective: {position}</Brief>}
+                        {userType==='recruiter'?
+                        <Brief>Requirements: {info}</Brief>
+                        :<Brief>Self-introduction: {info}</Brief>}
                         {salary?<Brief>Salary: {salary}</Brief>:null}
                     </Item>
                 </List>

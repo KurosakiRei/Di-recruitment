@@ -15,6 +15,7 @@ import Message from '../../containers/interfaces/message-interface'
 import Profile from '../../containers/interfaces/profile-interface'
 import RecruiterInfo from '../../containers/interfaces/recruiter-info-interface'
 import SeekerInfo from '../../containers/interfaces/seeker-info-interface'
+import Chat from '../../containers/interfaces/chat-interface'
 
 import '../../assets/css/utils.css'
 
@@ -103,13 +104,14 @@ export default class Main extends Component{
 
         return (
             <div>
-                {currentTab?<NavBar>{currentTab.title}</NavBar>:null} 
+                {currentTab?<NavBar className='stick-top'>{currentTab.title}</NavBar>:null} 
                 <Switch>
                     {tabList.map((each, index) =>
                         <Route path={each.path} component={each.componet} key={index}></Route>
                     )}
                     <Route path='/recruiter_info' component={RecruiterInfo}></Route>
                     <Route path='/seeker_info' component={SeekerInfo}></Route>
+                    <Route path='/chat/:userid' component={Chat}></Route>
                     <Route component={NotFound}></Route>
                 </Switch>
                 {currentTab?<TabFooter tabList={tabList}></TabFooter>:null}

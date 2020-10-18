@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-export default function ajax(url = '', method = 'GET', data = {}) {
+export default function ajax(url = '', data = {}, method = 'GET') {
     if (method === 'GET') {
         let qs = ''
         for (let each in data) {
